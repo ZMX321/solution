@@ -22,8 +22,8 @@ class Solution{
             try{
                 int num = 1;
                 while(num <= 26){
-                    while(flag){
-                        t2Lock.await();
+                    while(!flag){
+                        t1Lock.await();
                     }
                     System.out.println(Thread.currentThread().getName() + " : " + num);
                     num++;
@@ -42,8 +42,8 @@ class Solution{
             try{
                 int num = 0;
                 while(num < 26){
-                    while(!flag) {
-                        t1Lock.await();
+                    while(flag) {
+                        t2Lock.await();
                     }
                     System.out.println(Thread.currentThread().getName() + " : " + (char)(num + 'a'));
                     num++;
@@ -56,29 +56,6 @@ class Solution{
                 lock.unlock();
             }
         });
-
-
-
-//        Thread t2 = new Thread(() ->{
-//            lock.lock();
-//            int num = 0;
-//            while(num < 26 ){
-//                if(!flag){
-//                    try{
-//                        t2Lock.await();
-//                        System.out.println(Thread.currentThread().getName() + " : " + (char)(num + 'a'));
-//                        flag = true;
-//                        num++;
-//                        t1Lock.signal();
-//                    } catch (Exception e) {
-//                        throw new RuntimeException(e);
-//                    } finally {
-//
-//                        lock.unlock();
-//                    }
-//                }
-//            }
-//        });
 
         try{
             t1.start();
